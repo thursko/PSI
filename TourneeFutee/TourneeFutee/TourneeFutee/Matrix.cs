@@ -72,16 +72,25 @@ namespace TourneeFutee
          */
         public void AddRow(int i)
         {
-            if(i<0 || i>=this.NbRows)
+            if(i<0 || i>this.NbRows)
             {
                 throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
             List<float> list = new List<float>();
-            for(int j=0;j<this.NbColumns;j++)
-            {
-                list.Insert(i,this.defaultValue);
+            for(int j = 0; j < this.NbColumns; j++)
+                {
+                list.Add(this.defaultValue);
             }
-            this.valeurs.Insert(i,list);
+            if (i==this.NbRows)
+            {
+                this.valeurs.Add(list);
+            }
+            else
+            {
+                
+                this.valeurs.Insert(i, list);
+            }
+            
             // TODO : implémenter
         }
 
@@ -93,14 +102,25 @@ namespace TourneeFutee
         public void AddColumn(int j)
         {
             // TODO : implémenter
-            if (j < 0 || j >= this.NbColumns)
+            if (j < 0 || j > this.NbColumns)
             {
                 throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
-            for (int i=0;i<this.NbRows;i++)
+            if(j==this.NbColumns)
             {
-                this.valeurs[i].Insert(j,this.defaultValue);
+                for (int k = 0; k < this.NbRows; k++)
+                {
+                    this.valeurs[k].Add(this.defaultValue);
+                }
             }
+            else
+            {
+                for (int i = 0; i < this.NbRows; i++)
+                {
+                    this.valeurs[i].Insert(j, this.defaultValue);
+                }
+            }
+            
         }
 
         // Supprime la ligne à l'indice `i`. Décale les lignes suivantes vers le haut.
