@@ -104,6 +104,7 @@
             // TODO : implémenter
             if(i < 0 || j < 0 || i >= this.NbRows || j >= this.NbColumns)
             {
+                Console.WriteLine("Getvalue; indices outofrange");
                 return 0;
             }
             else
@@ -117,6 +118,15 @@
         public void SetValue(int i, int j, float v)
         {
             // TODO : implémenter
+            if (i < 0 || j < 0 || i >= this.NbRows || j >= this.NbColumns)
+            {
+                Console.WriteLine("SetValue: indices outofrange");
+            }
+            else
+            {
+                this.valeurs[i][j] = v;
+            }
+
         }
 
         // Affiche la matrice
