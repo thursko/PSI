@@ -83,12 +83,17 @@
         public void RemoveRow(int i)
         {
             // TODO : implémenter
+            this.valeurs.RemoveAt(i);
         }
 
         // Supprime la colonne à l'indice `j`. Décale les colonnes suivantes vers la gauche.
         // Lève une ArgumentOutOfRangeException si `j` est en dehors des indices valides
         public void RemoveColumn(int j)
         {
+            for(int i=0;i<this.NbRows;i++)
+            {
+                this.valeurs[i].RemoveAt(j);
+            }
             // TODO : implémenter
         }
 
