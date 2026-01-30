@@ -72,7 +72,7 @@ namespace TourneeFutee
          */
         public void AddRow(int i)
         {
-            if(i<0 || i>=this.valeurs.Count)
+            if(i<0 || i>=this.NbRows)
             {
                 throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
@@ -93,7 +93,7 @@ namespace TourneeFutee
         public void AddColumn(int j)
         {
             // TODO : implémenter
-            if (j < 0 || j >= this.valeurs[0].Count)
+            if (j < 0 || j >= this.NbColumns)
             {
                 throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
@@ -108,7 +108,7 @@ namespace TourneeFutee
         public void RemoveRow(int i)
         {
             // TODO : implémenter
-            if (i < 0 || i >= this.valeurs.Count)
+            if (i < 0 || i >= this.NbRows)
             {
                 throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
@@ -135,11 +135,11 @@ namespace TourneeFutee
         public float GetValue(int i, int j)
         {
             // TODO : implémenter
-            if (i < 0 || i >= this.valeurs.Count)
+            if (i < 0 || i >= this.NbRows)
             {
                 throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
-            if (j < 0 || j >= this.valeurs[0].Count)
+            if (j < 0 || j >= this.NbColumns)
             {
                 throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
@@ -151,11 +151,11 @@ namespace TourneeFutee
         public void SetValue(int i, int j, float v)
         {
             // TODO : implémenter
-            if (i < 0 || i >= this.valeurs.Count)
+            if (i < 0 || i >= this.NbRows)
             {
                 throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
-            if (j < 0 || j >= this.valeurs[0].Count)
+            if (j < 0 || j >= this.NbColumns)
             {
                 throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
