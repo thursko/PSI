@@ -72,6 +72,10 @@
         public void AddColumn(int j)
         {
             // TODO : implémenter
+            for(int i=0;i<this.NbRows;i++)
+            {
+                this.valeurs[i].Insert(j,this.defaultValue);
+            }
         }
 
         // Supprime la ligne à l'indice `i`. Décale les lignes suivantes vers le haut.
