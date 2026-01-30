@@ -86,7 +86,11 @@ namespace TourneeFutee
         public void AddColumn(int j)
         {
             // TODO : implémenter
-            for(int i=0;i<this.NbRows;i++)
+            if (j < 0 || j >= this.valeurs[0].Count)
+            {
+                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
+            }
+            for (int i=0;i<this.NbRows;i++)
             {
                 this.valeurs[i].Insert(j,this.defaultValue);
             }
