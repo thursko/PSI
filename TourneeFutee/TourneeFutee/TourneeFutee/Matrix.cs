@@ -14,11 +14,12 @@
         {
             // TODO : implémenter
             this.valeurs=new List<List<float>>();
+            this.defaultValue = defaultValue;
             for(int i= 0; i<nbRows; i++)
             {
                 for(int j=0; j<nbColumns; j++)
                 {
-                    this.valeurs[i].Add(defaultValue);
+                    this.valeurs[i].Add(this.defaultValue);
                 }
             }
         }
@@ -54,6 +55,12 @@
          */
         public void AddRow(int i)
         {
+            List<float> list = new List<float>();
+            for(int i=0;i<this.NbRows+1;i++)
+            {
+                list.Add(this.defaultValue);
+            }
+            this.valeurs.Add(list);
             // TODO : implémenter
         }
 
