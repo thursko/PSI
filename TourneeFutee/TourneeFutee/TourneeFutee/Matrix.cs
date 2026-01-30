@@ -4,6 +4,7 @@
     {
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
         public List<List<float>> valeurs;
+        private float defaultValue;
 
         /* Crée une matrice de dimensions `nbRows` x `nbColums`.
          * Toutes les cases de cette matrice sont remplies avec `defaultValue`.
@@ -13,11 +14,12 @@
         {
             // TODO : implémenter
             this.valeurs=new List<List<float>>();
+            this.defaultValue = defaultValue;
             for(int i= 0; i<nbRows; i++)
             {
                 for(int j=0; j<nbColumns; j++)
                 {
-                    this.valeurs[i].Add(defaultValue);
+                    this.valeurs[i].Add(this.defaultValue);
                 }
             }
         }
@@ -26,7 +28,7 @@
         // Lecture seule
         public float DefaultValue
         {
-            get; // TODO : implémenter
+            get { return this.DefaultValue; } // TODO : implémenter
                  // pas de set
         }
 
@@ -34,7 +36,7 @@
         // Lecture seule
         public int NbRows
         {
-            get; // TODO : implémenter
+            get { return this.valeurs.Count(); } // TODO : implémenter
                  // pas de set
         }
 
@@ -42,7 +44,7 @@
         // Lecture seule
         public int NbColumns
         {
-            get; // TODO : implémenter
+            get { return this.valeurs[0].Count(); } // TODO : implémenter
                  // pas de set
         }
 
@@ -53,6 +55,12 @@
          */
         public void AddRow(int i)
         {
+            List<float> list = new List<float>();
+            for(int j=0;j<this.NbRows+1;j++)
+            {
+                list.Add(this.defaultValue);
+            }
+            this.valeurs.Insert(i,list);
             // TODO : implémenter
         }
 
