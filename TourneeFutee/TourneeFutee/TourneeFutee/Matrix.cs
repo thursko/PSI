@@ -13,11 +13,19 @@
         public Matrix(int nbRows = 0, int nbColumns = 0, float defaultValue = 0)
         {
             // TODO : implémenter
-            this.valeurs=new List<List<float>>();
-            this.defaultValue = defaultValue;
-            for(int i= 0; i<nbRows; i++)
+            if (nbRows < 0)
             {
-                for(int j=0; j<nbColumns; j++)
+                throw new ArgumentException(nameof(nbRows),"Nombre de lignes négatif");
+            }
+            if(nbColumns < 0)
+            {
+                throw new ArgumentException(nameof(nbColumns), "Nombre de colonnes négatif");
+            }
+            this.valeurs = new List<List<float>>();
+            this.defaultValue = defaultValue;
+            for (int i = 0; i < nbRows; i++)
+            {
+                for (int j = 0; j < nbColumns; j++)
                 {
                     this.valeurs[i].Add(this.defaultValue);
                 }
@@ -55,6 +63,7 @@
          */
         public void AddRow(int i)
         {
+            if
             List<float> list = new List<float>();
             for(int j=0;j<this.NbRows+1;j++)
             {
