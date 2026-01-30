@@ -4,15 +4,25 @@
     {
 
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
-
+        private Matrix matAdj;
+        private bool isDirected;
+        private float noEdgeValue;
 
         // --- Construction du graphe ---
 
         // Contruit un graphe (`directed`=true => orienté)
         // La valeur `noEdgeValue` est le poids modélisant l'absence d'un arc (0 par défaut)
-        public Graph(bool directed, float noEdgeValue = 0)
+        public Graph(int ordre, bool directed, float noEdgeValue = 0)
         {
             // TODO : implémenter
+            if(directed)
+            {
+                Matrix matAdj = new Matrix();
+            }
+            else
+            {
+
+            }
         }
 
 
