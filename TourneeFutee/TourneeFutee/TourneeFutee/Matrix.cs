@@ -77,9 +77,9 @@ namespace TourneeFutee
                 throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
             List<float> list = new List<float>();
-            for(int j=0;j<this.NbRows+1;j++)
+            for(int j=0;j<this.NbColumns;j++)
             {
-                list.Add(this.defaultValue);
+                list.Insert(i,this.defaultValue);
             }
             this.valeurs.Insert(i,list);
             // TODO : implémenter
