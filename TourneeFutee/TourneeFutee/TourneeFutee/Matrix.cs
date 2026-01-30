@@ -19,11 +19,11 @@ namespace TourneeFutee
             // TODO : implémenter
             if (nbRows < 0)
             {
-                throw new ArgumentException(nameof(nbRows),"Nombre de lignes négatif");
+                throw new ArgumentOutOfRangeException(nameof(nbRows),"Nombre de lignes négatif");
             }
             if(nbColumns < 0)
             {
-                throw new ArgumentException(nameof(nbColumns), "Nombre de colonnes négatif");
+                throw new ArgumentOutOfRangeException(nameof(nbColumns), "Nombre de colonnes négatif");
             }
             this.valeurs = new List<List<float>>();
             this.defaultValue = defaultValue;
@@ -69,7 +69,7 @@ namespace TourneeFutee
         {
             if(i<0 || i>=this.valeurs.Count)
             {
-                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
             List<float> list = new List<float>();
             for(int j=0;j<this.NbRows+1;j++)
@@ -90,7 +90,7 @@ namespace TourneeFutee
             // TODO : implémenter
             if (j < 0 || j >= this.valeurs[0].Count)
             {
-                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
             for (int i=0;i<this.NbRows;i++)
             {
@@ -105,7 +105,7 @@ namespace TourneeFutee
             // TODO : implémenter
             if (i < 0 || i >= this.valeurs.Count)
             {
-                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
             this.valeurs.RemoveAt(i);
         }
@@ -116,7 +116,7 @@ namespace TourneeFutee
         {
             if (j < 0 || j >= this.valeurs[0].Count)
             {
-                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
             for (int i=0;i<this.NbRows;i++)
             {
@@ -132,11 +132,11 @@ namespace TourneeFutee
             // TODO : implémenter
             if (i < 0 || i >= this.valeurs.Count)
             {
-                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
             if (j < 0 || j >= this.valeurs[0].Count)
             {
-                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
             return this.valeurs[i][j];
         }
@@ -148,11 +148,11 @@ namespace TourneeFutee
             // TODO : implémenter
             if (i < 0 || i >= this.valeurs.Count)
             {
-                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(i), "Indice d'insertion invalide");
             }
             if (j < 0 || j >= this.valeurs[0].Count)
             {
-                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
+                throw new ArgumentOutOfRangeException(nameof(j), "Indice d'insertion invalide");
             }
             this.valeurs[i][j] = v;
 
