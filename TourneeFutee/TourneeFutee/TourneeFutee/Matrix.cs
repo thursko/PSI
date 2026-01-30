@@ -128,15 +128,15 @@ namespace TourneeFutee
         public float GetValue(int i, int j)
         {
             // TODO : implémenter
-            if(i < 0 || j < 0 || i >= this.NbRows || j >= this.NbColumns)
+            if (i < 0 || i >= this.valeurs.Count)
             {
-                Console.WriteLine("Getvalue; indices outofrange");
-                return 0;
+                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
             }
-            else
+            if (j < 0 || j >= this.valeurs[0].Count)
             {
-                return this.valeurs[i][j];
+                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
             }
+            return this.valeurs[i][j];
         }
 
         // Affecte la valeur à la ligne `i` et colonne `j` à `v`
@@ -144,14 +144,15 @@ namespace TourneeFutee
         public void SetValue(int i, int j, float v)
         {
             // TODO : implémenter
-            if (i < 0 || j < 0 || i >= this.NbRows || j >= this.NbColumns)
+            if (i < 0 || i >= this.valeurs.Count)
             {
-                Console.WriteLine("SetValue: indices outofrange");
+                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
             }
-            else
+            if (j < 0 || j >= this.valeurs[0].Count)
             {
-                this.valeurs[i][j] = v;
+                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
             }
+            this.valeurs[i][j] = v;
 
         }
 
