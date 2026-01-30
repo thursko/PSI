@@ -1,4 +1,6 @@
-﻿namespace TourneeFutee
+﻿using System.Data.Common;
+
+namespace TourneeFutee
 {
     public class Matrix
     {
@@ -63,7 +65,10 @@
          */
         public void AddRow(int i)
         {
-            if
+            if(i<0 || i>=this.valeurs.Count)
+            {
+                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
+            }
             List<float> list = new List<float>();
             for(int j=0;j<this.NbRows+1;j++)
             {
