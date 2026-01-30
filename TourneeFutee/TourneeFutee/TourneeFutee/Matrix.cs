@@ -3,7 +3,7 @@
     public class Matrix
     {
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
-
+        public List<List<float>> valeurs;
 
         /* Crée une matrice de dimensions `nbRows` x `nbColums`.
          * Toutes les cases de cette matrice sont remplies avec `defaultValue`.
@@ -12,6 +12,14 @@
         public Matrix(int nbRows = 0, int nbColumns = 0, float defaultValue = 0)
         {
             // TODO : implémenter
+            this.valeurs=new List<List<float>>();
+            for(int i= 0; i<nbRows; i++)
+            {
+                for(int j=0; j<nbColumns; j++)
+                {
+                    this.valeurs[i].Add(defaultValue);
+                }
+            }
         }
 
         // Propriété : valeur par défaut utilisée pour remplir les nouvelles cases
