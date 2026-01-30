@@ -35,7 +35,7 @@
         // Lecture seule
         public int NbRows
         {
-            get; // TODO : implémenter
+            get { return this.valeurs.Count(); } // TODO : implémenter
                  // pas de set
         }
 
