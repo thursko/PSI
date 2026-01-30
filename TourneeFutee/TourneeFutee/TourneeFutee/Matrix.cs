@@ -141,7 +141,7 @@
                     {
                         Console.Write(n+" ");
                     }
-                    Console.WriteLine()
+                    Console.WriteLine();
                 }
             }
             else
