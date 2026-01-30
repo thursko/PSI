@@ -99,6 +99,21 @@
         public void Print()
         {
             // TODO : implémenter
+            if(valeurs!=null&&valeurs.Count>0)
+            {
+                foreach(List<float> a in valeurs)
+                {
+                    foreach(float n in a)
+                    {
+                        Console.Write(n+" ");
+                    }
+                    Console.WriteLine()
+                }
+            }
+            else
+            {
+                Console.WriteLine("Matrice vide ou nulle");
+            }
         }
 
 
