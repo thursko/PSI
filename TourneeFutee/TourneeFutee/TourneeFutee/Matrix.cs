@@ -43,7 +43,7 @@
         // Lecture seule
         public int NbColumns
         {
-            get; // TODO : implémenter
+            get { return this.valeurs[0].Count(); } // TODO : implémenter
                  // pas de set
         }
 
