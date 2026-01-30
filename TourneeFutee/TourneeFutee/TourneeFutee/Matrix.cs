@@ -56,11 +56,11 @@
         public void AddRow(int i)
         {
             List<float> list = new List<float>();
-            for(int i=0;i<this.NbRows+1;i++)
+            for(int j=0;j<this.NbRows+1;j++)
             {
                 list.Add(this.defaultValue);
             }
-            this.valeurs.Add(list);
+            this.valeurs.Insert(i,list);
             // TODO : implémenter
         }
 
