@@ -102,7 +102,14 @@
         public float GetValue(int i, int j)
         {
             // TODO : implémenter
-            return 0.0f;
+            if(i < 0 || j < 0 || i >= this.NbRows || j >= this.NbColumns)
+            {
+                return 0;
+            }
+            else
+            {
+                return this.valeurs[i][j];
+            }
         }
 
         // Affecte la valeur à la ligne `i` et colonne `j` à `v`
