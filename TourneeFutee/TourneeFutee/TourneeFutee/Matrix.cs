@@ -101,6 +101,10 @@ namespace TourneeFutee
         public void RemoveRow(int i)
         {
             // TODO : implémenter
+            if (i < 0 || i >= this.valeurs.Count)
+            {
+                throw new ArgumentException(nameof(i), "Indice d'insertion invalide");
+            }
             this.valeurs.RemoveAt(i);
         }
 
@@ -108,7 +112,11 @@ namespace TourneeFutee
         // Lève une ArgumentOutOfRangeException si `j` est en dehors des indices valides
         public void RemoveColumn(int j)
         {
-            for(int i=0;i<this.NbRows;i++)
+            if (j < 0 || j >= this.valeurs[0].Count)
+            {
+                throw new ArgumentException(nameof(j), "Indice d'insertion invalide");
+            }
+            for (int i=0;i<this.NbRows;i++)
             {
                 this.valeurs[i].RemoveAt(j);
             }
