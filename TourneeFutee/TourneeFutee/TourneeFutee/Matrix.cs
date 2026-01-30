@@ -26,6 +26,11 @@ namespace TourneeFutee
                 throw new ArgumentOutOfRangeException(nameof(nbColumns), "Nombre de colonnes négatif");
             }
             this.valeurs = new List<List<float>>();
+            List<float> values = new List<float>();
+            for(int n=0;n<nbRows; n++)
+            {
+                this.valeurs.Add(values);
+            }
             this.defaultValue = defaultValue;
             for (int i = 0; i < nbRows; i++)
             {
