@@ -4,6 +4,7 @@
     {
         // TODO : ajouter tous les attributs que vous jugerez pertinents 
         public List<List<float>> valeurs;
+        private float defaultValue;
 
         /* Crée une matrice de dimensions `nbRows` x `nbColums`.
          * Toutes les cases de cette matrice sont remplies avec `defaultValue`.
@@ -26,7 +27,7 @@
         // Lecture seule
         public float DefaultValue
         {
-            get; // TODO : implémenter
+            get { return this.DefaultValue; } // TODO : implémenter
                  // pas de set
         }
 
