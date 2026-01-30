@@ -14,7 +14,7 @@ namespace TourneeFutee
          * Toutes les cases de cette matrice sont remplies avec `defaultValue`.
          * Lève une ArgumentOutOfRangeException si une des dimensions est négative
          */
-        public Matrix(int nbRows = 0, int nbColumns = 0, float defaultValue = 0)
+        public Matrix(int nbRows = 0, int nbColumns = 0, float defaultValue= 0)
         {
             // TODO : implémenter
             if (nbRows < 0)
@@ -40,7 +40,7 @@ namespace TourneeFutee
         // Lecture seule
         public float DefaultValue
         {
-            get { return this.DefaultValue; } // TODO : implémenter
+            get { return this.defaultValue; } // TODO : implémenter
                  // pas de set
         }
 
