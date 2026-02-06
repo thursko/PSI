@@ -17,12 +17,17 @@
             // TODO : implémenter
             if(directed)
             {
-                Matrix matAdj = new Matrix();
+                
+                this.isDirected = true;
             }
             else
             {
+                this.isDirected = false;
 
             }
+            this.matAdj = new Matrix();
+            this.noEdgeValue = noEdgeValue;
+
         }
 
 
