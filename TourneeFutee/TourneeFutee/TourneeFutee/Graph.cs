@@ -27,7 +27,14 @@
             }
             this.matAdj = new Matrix();
             this.noEdgeValue = noEdgeValue;
-
+            for(int i=0;i<ordre; i++)
+            {
+                matAdj.AddRow(0);
+            }
+            for(int j=0;j<ordre; j++)
+            {
+                matAdj.AddColumn(0);
+            }
         }
 
 
