@@ -44,7 +44,7 @@
         // Lecture seule
         public int Order
         {
-            get;    // TODO : implémenter
+            get { return this.matAdj.NbRows; } // TODO : implémenter
                     // pas de set
         }
 
@@ -52,7 +52,7 @@
         // Lecture seule
         public bool Directed
         {
-            get;    // TODO : implémenter
+            get { return this.isDirected; }   // TODO : implémenter
                     // pas de set
         }
 
