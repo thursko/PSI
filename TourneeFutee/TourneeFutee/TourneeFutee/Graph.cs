@@ -162,7 +162,7 @@
             int j = nameToIndex[destinationName];
             if (matAdj.GetValue(i, j) != noEdgeValue)
             {
-                throw new ArgumentException("Un arc existe déjà entre "+sourceName+" et '{destinationName}'.");
+                throw new ArgumentException("Un arc existe déjà entre "+sourceName+" et "+destinationName+".");
             }
             matAdj.SetValue(i, j, weight);
             if(!this.isDirected)
@@ -179,6 +179,25 @@
          */
         public void RemoveEdge(string sourceName, string destinationName)
         {
+            if (!nameToIndex.ContainsKey(sourceName))
+            {
+                throw new ArgumentException("Le sommet " + sourceName + " n'existe pas dans le graphe.");
+            }
+            if (!nameToIndex.ContainsKey(destinationName))
+            {
+                throw new ArgumentException("Le sommet " + destinationName + " n'existe pas dans le graphe.");
+            }
+            int i = nameToIndex[sourceName];
+            int j = nameToIndex[destinationName];
+            if (matAdj.GetValue(i, j) == noEdgeValue)
+            {
+                throw new ArgumentException("Il n'y a pas d'arc existant entre "+sourceName+" et "+destinationName+".");
+            }
+            matAdj.SetValue(i, j, noEdgeValue);
+            if (!this.isDirected)
+            {
+                matAdj.SetValue(j, i, noEdgeValue);
+            }
             // TODO : implémenter
         }
 
