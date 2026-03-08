@@ -98,15 +98,24 @@
         // Lève une ArgumentException si le sommet n'a pas été trouvé dans le graphe
         public float GetVertexValue(string name)
         {
-            // TODO : implémenter
-            return 0.0f;
+            if (!nameToIndex.ContainsKey(name))
+            {
+                throw new ArgumentException("Le sommet " + name + " est introuvable.");
+            }
+            int index = nameToIndex[name];
+            return vertexValues[index];
         }
 
         // Affecte la valeur du sommet de nom `name` à `value`
         // Lève une ArgumentException si le sommet n'a pas été trouvé dans le graphe
         public void SetVertexValue(string name, float value)
         {
-            // TODO : implémenter
+            if (!nameToIndex.ContainsKey(name))
+            {
+                throw new ArgumentException("Le sommet " + name + " est introuvable.");
+            }
+            int index = nameToIndex[name];
+            vertexValues[index] = value;
         }
 
 
