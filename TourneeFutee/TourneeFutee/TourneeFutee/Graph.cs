@@ -7,7 +7,9 @@
         private Matrix matAdj;
         private bool isDirected;
         private float noEdgeValue;
-
+        private Dictionary<string, int> nameToIndex;
+        private List<string> vertexNames;
+        private List<float> vertexValues;
         // --- Construction du graphe ---
 
         // Contruit un graphe (`directed`=true => orienté)
@@ -15,25 +17,18 @@
         public Graph(int ordre, bool directed, float noEdgeValue = 0)
         {
             // TODO : implémenter
-            if(directed)
-            {
-                
-                this.isDirected = true;
-            }
-            else
-            {
-                this.isDirected = false;
-
-            }
-            this.matAdj = new Matrix();
+            this.isDirected = directed;
             this.noEdgeValue = noEdgeValue;
-            for(int i=0;i<ordre; i++)
+            this.matAdj = new Matrix(ordre, ordre, noEdgeValue);
+            this.nameToIndex = new Dictionary<string, int>();
+            this.vertexNames = new List<string>();
+            this.vertexValues = new List<float>();
+            for (int i = 0; i < ordre; i++)
             {
-                matAdj.AddRow(0);
-            }
-            for(int j=0;j<ordre; j++)
-            {
-                matAdj.AddColumn(0);
+                string defaultName = "V" + i;
+                nameToIndex.Add(defaultName, i);
+                vertexNames.Add(defaultName);
+                vertexValues.Add(0); 
             }
         }
 
