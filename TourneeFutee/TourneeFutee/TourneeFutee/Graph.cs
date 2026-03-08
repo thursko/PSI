@@ -14,22 +14,17 @@
 
         // Contruit un graphe (`directed`=true => orienté)
         // La valeur `noEdgeValue` est le poids modélisant l'absence d'un arc (0 par défaut)
-        public Graph(int ordre, bool directed, float noEdgeValue = 0)
+        public Graph(bool directed, float noEdgeValue = 0)
         {
             // TODO : implémenter
             this.isDirected = directed;
             this.noEdgeValue = noEdgeValue;
-            this.matAdj = new Matrix(ordre, ordre, noEdgeValue);
+
+            this.matAdj = new Matrix(0, 0, noEdgeValue);
+
             this.nameToIndex = new Dictionary<string, int>();
             this.vertexNames = new List<string>();
             this.vertexValues = new List<float>();
-            for (int i = 0; i < ordre; i++)
-            {
-                string defaultName = "V" + i;
-                nameToIndex.Add(defaultName, i);
-                vertexNames.Add(defaultName);
-                vertexValues.Add(0); 
-            }
         }
 
 
