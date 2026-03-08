@@ -78,7 +78,20 @@
         // Lève une ArgumentException si le sommet n'a pas été trouvé dans le graphe
         public void RemoveVertex(string name)
         {
-            // TODO : implémenter
+            if (!nameToIndex.ContainsKey(name))
+            {
+                throw new ArgumentException("Le sommet "+name+" est introuvable.");
+            }
+            int indexToRemove = nameToIndex[name];
+            matAdj.RemoveRow(indexToRemove);
+            matAdj.RemoveColumn(indexToRemove);
+            vertexNames.RemoveAt(indexToRemove);
+            vertexValues.RemoveAt(indexToRemove);
+            nameToIndex.Remove(name);
+            for (int i = indexToRemove; i < vertexNames.Count; i++)
+            {
+                nameToIndex[vertexNames[i]] = i;
+            }
         }
 
         // Renvoie la valeur du sommet de nom `name`
