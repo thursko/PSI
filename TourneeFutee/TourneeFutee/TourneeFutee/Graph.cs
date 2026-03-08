@@ -124,10 +124,24 @@
         // Lève une ArgumentException si le sommet n'a pas été trouvé dans le graphe
         public List<string> GetNeighbors(string vertexName)
         {
+            if (!nameToIndex.ContainsKey(vertexName))
+            {
+                throw new ArgumentException("Le sommet "+vertexName+" n'existe pas dans le graphe.");
+            }
+
             List<string> neighborNames = new List<string>();
 
-            // TODO : implémenter
+            int rowIndex = nameToIndex[vertexName];
+            int nbColumns = matAdj.NbColumns;
+            for (int j = 0; j < nbColumns; j++)
+            {
+                float weight = matAdj.GetValue(rowIndex, j);
 
+                if (weight != noEdgeValue)
+                {
+                    neighborNames.Add(vertexNames[j]);
+                }
+            }
             return neighborNames;
         }
 
