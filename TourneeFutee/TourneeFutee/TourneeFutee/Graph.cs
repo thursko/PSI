@@ -155,7 +155,25 @@
          */
         public void AddEdge(string sourceName, string destinationName, float weight = 1)
         {
-            // TODO : implémenter
+            if (!nameToIndex.ContainsKey(sourceName))
+            {
+                throw new ArgumentException("Le sommet " + sourceName + " n'existe pas dans le graphe.");
+            }
+            if (!nameToIndex.ContainsKey(destinationName))
+            {
+                throw new ArgumentException("Le sommet " + destinationName + " n'existe pas dans le graphe.");
+            }
+            int i = nameToIndex[sourceName];
+            int j = nameToIndex[destinationName];
+            if (matAdj.GetValue(i, j) != noEdgeValue)
+            {
+                throw new ArgumentException("Un arc existe déjà entre "+sourceName+" et '{destinationName}'.");
+            }
+            matAdj.SetValue(i, j, weight);
+            if(!this.isDirected)
+            {
+                matAdj.SetValue(j,i,weight);
+            }
         }
 
         /* Supprime l'arc allant du sommet nommé `sourceName` au sommet nommé `destinationName` du graphe
