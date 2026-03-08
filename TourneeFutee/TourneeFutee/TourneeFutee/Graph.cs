@@ -59,6 +59,18 @@
         public void AddVertex(string name, float value = 0)
         {
             // TODO : implémenter
+            if (nameToIndex.ContainsKey(name))
+            {
+                throw new ArgumentException("Un sommet nommé "+name+" existe déjà.");
+            }
+
+            int newIndex = this.Order;
+            matAdj.AddRow(newIndex);
+            matAdj.AddColumn(newIndex);
+
+            nameToIndex.Add(name, newIndex);
+            vertexNames.Add(name);
+            vertexValues.Add(value);
         }
 
 
