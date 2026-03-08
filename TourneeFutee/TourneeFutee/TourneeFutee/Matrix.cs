@@ -58,8 +58,13 @@ namespace TourneeFutee
         // Lecture seule
         public int NbColumns
         {
-            get { return this.valeurs[0].Count(); } // TODO : implémenter
-                 // pas de set
+            get
+            {
+                if (valeurs.Count() == 0)
+                    return 0;
+                return this.valeurs[0].Count();
+            }// TODO : implémenter
+             // pas de set
         }
 
         /* Insère une ligne à l'indice `i`. Décale les lignes suivantes vers le bas.

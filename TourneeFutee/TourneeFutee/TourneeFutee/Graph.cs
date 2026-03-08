@@ -210,7 +210,18 @@
         public float GetEdgeWeight(string sourceName, string destinationName)
         {
             // TODO : implémenter
-            return 0.0f;
+            int i = vertexNames.IndexOf(sourceName);
+            int j = vertexNames.IndexOf(destinationName);
+
+            if (i < 0 || j < 0)
+                throw new ArgumentException();
+
+            float weight = matAdj.GetValue(i, j);
+
+            if (weight == noEdgeValue)
+                throw new ArgumentException();
+
+            return weight;
         }
 
         /* Affecte le poids l'arc allant du sommet nommé `sourceName` au sommet nommé `destinationName` à `weight` 
@@ -220,6 +231,16 @@
         public void SetEdgeWeight(string sourceName, string destinationName, float weight)
         {
             // TODO : implémenter
+            int i = vertexNames.IndexOf(sourceName);
+            int j = vertexNames.IndexOf(destinationName);
+
+            if (i < 0 || j < 0)
+                throw new ArgumentException();
+
+            matAdj.SetValue(i, j, weight);
+
+            if (!isDirected)
+                matAdj.SetValue(j, i, weight);
         }
 
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
