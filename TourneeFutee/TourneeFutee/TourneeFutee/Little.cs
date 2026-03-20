@@ -99,7 +99,47 @@
         public static (int i, int j, float value) GetMaxRegret(Matrix m)
         {
             // TODO : implémenter
-            
+            int bestI = -1;
+            int bestJ = -1;
+            float maxRegret = float.MinValue;
+            for(int i=0; i<m.NbRows; i++)
+            {
+                for(int j=0; j<m.NbColumns;j++)
+                {
+                    if (m.GetValue(i,j)==0)
+                    {
+                        float minRow = float.MaxValue;
+                        float minCol = float.MaxValue;
+                        for (int k = 0; k < m.NbColumns; k++)
+                        {
+                            if (k != j && m.GetValue(i,k) < minRow)
+                            {
+                                minRow = m.GetValue(i,k);
+                            }
+                        }
+
+                        // Minimum de la colonne j (hors ligne i)
+                        for (int k = 0; k < m.NbRows; k++)
+                        {
+                            if (k != i && m.GetValue(k,j)< minCol)
+                            {
+                                minCol = m.GetValue(k,j);
+                            }
+                        }
+
+                        float regret = minRow + minCol;
+
+                        if (regret > maxRegret)
+                        {
+                            maxRegret = regret;
+                            bestI = i;
+                            bestJ = j;
+                        }
+                    }
+                }
+            }
+            return (bestI, bestJ, maxRegret);
+
 
         }
 
