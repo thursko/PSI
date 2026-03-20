@@ -149,8 +149,27 @@
         public static bool IsForbiddenSegment((string source, string destination) segment, List<(string source, string destination)> includedSegments, int nbCities)
         {
 
-            // TODO : implémenter
-            return false;   
+            Dictionary<string, string> successeurs = new Dictionary<string, string>();
+            foreach (var seg in includedSegments)
+            {
+                successeurs[seg.source] = seg.destination;
+            }
+            int longueurChaine = 1; 
+            string courant = segment.destination;
+            while (successeurs.ContainsKey(courant))
+            {
+                courant = successeurs[courant];
+                longueurChaine++;
+
+                if (courant == segment.source)
+                {
+                    return longueurChaine < nbCities;
+                }
+
+                if (longueurChaine > nbCities)
+                    break;
+            }
+            return false;
         }
 
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
