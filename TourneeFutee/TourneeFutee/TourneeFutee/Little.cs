@@ -9,6 +9,7 @@
         // Instancie le planificateur en spécifiant le graphe modélisant un problème de voyageur de commerce
         public Little(Graph graph)
         {
+            this.graphe = graph;
             // TODO : implémenter
         }
 
@@ -33,34 +34,61 @@
             float somme = 0;
             for(int i=0;i<m.NbRows; i++)
             {
-                MinLigne = m.GetValue(i, 0);
+                if(i==0)
+                {
+                    MinLigne = m.GetValue(i, 1);
+                }
+                else
+                {
+                    MinLigne = m.GetValue(i, 0);
+                }
                 for (int j=0;j<m.NbColumns;j++)
                 {
-                    if(MinLigne>m.GetValue(i,j))
+                    if(j!=i)
                     {
-                        MinLigne=m.GetValue(i,j);
+                        if (MinLigne > m.GetValue(i, j))
+                        {
+                            MinLigne = m.GetValue(i, j);
+                        }
                     }
+                    
                 }
                 somme += MinLigne;
                 for(int a=0;a<m.NbColumns;a++)
                 {
-                    m.SetValue(i, a, m.GetValue(i, a) - MinLigne);
+                    if(a!=i)
+                    {
+                        m.SetValue(i, a, m.GetValue(i, a) - MinLigne);
+                    }
                 }
             }
             for (int k = 0; k < m.NbColumns; k++)
             {
-                MinColonne = m.GetValue(0, k);
+                if(k==0)
+                {
+                    MinColonne = m.GetValue(1, k);
+                }
+                else
+                {
+                    MinColonne = m.GetValue(0, k);
+                }
                 for (int l = 0; l < m.NbRows; l++)
                 {
-                    if (MinColonne > m.GetValue(k, l))
+                    if(l!=k)
                     {
-                        MinColonne = m.GetValue(k, l);
+                        if (MinColonne > m.GetValue(l, k))
+                        {
+                            MinColonne = m.GetValue(l, k);
+                        }
                     }
                 }
                 somme += MinColonne;
                 for(int b=0;b<m.NbRows;b++)
                 {
-                    m.SetValue(b, k, m.GetValue(b, k) - MinColonne);
+                    if(k!=b)
+                    {
+                        m.SetValue(b, k, m.GetValue(b, k) - MinColonne);
+                    }
                 }
             }
             return somme;
@@ -71,7 +99,7 @@
         public static (int i, int j, float value) GetMaxRegret(Matrix m)
         {
             // TODO : implémenter
-            return (0, 0, 0.0f);
+            
 
         }
 
