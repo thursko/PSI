@@ -41,12 +41,12 @@
         public void Print()
         {
             // TODO : implémenter 
-            Console.WriteLine($"Coût total : {cost}");
+            Console.WriteLine("Coût total : "+cost);
             Console.WriteLine("Segments :");
 
             foreach (var (source, destination) in segments)
             {
-                Console.WriteLine($"{source} -> {destination}");
+                Console.WriteLine(source + " -> " + destination);
             }
         }
 
