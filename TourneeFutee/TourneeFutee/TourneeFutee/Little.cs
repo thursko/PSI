@@ -18,7 +18,61 @@
         public Tour ComputeOptimalTour()
         {
             // TODO : implémenter
-            return new Tour();
+            int n = graphe.Order;
+            var vertices = graphe.GetVertices();
+
+            Matrix m = new Matrix(n, n, float.MaxValue);
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == j)
+                    {
+                        m.SetValue(i, j, float.MaxValue);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            m.SetValue(i, j, graphe.GetEdgeWeight(vertices[i], vertices[j]));
+                        }
+                        catch
+                        {
+                            m.SetValue(i, j, float.MaxValue);
+                        }
+                    }
+                }
+            }
+            ReduceMatrix(m);
+
+            Tour tour = new Tour();
+            List<(string source, string destination)> chosenSegments = new List<(string, string)>();
+
+            while (chosenSegments.Count < n)
+            {
+                var (i, j, _) = GetMaxRegret(m);
+
+                string src = vertices[i];
+                string dst = vertices[j];
+                if (IsForbiddenSegment((src, dst), chosenSegments, n))
+                {
+                    m.SetValue(i, j, float.MaxValue);
+                    continue;
+                }
+                float cost = graphe.GetEdgeWeight(src, dst);
+                tour.AddSegment(src, dst, cost);
+                chosenSegments.Add((src, dst));
+                for (int k = 0; k < n; k++)
+                {
+                    m.SetValue(i, k, float.MaxValue);
+                    m.SetValue(k, j, float.MaxValue);
+                }
+                m.SetValue(j, i, float.MaxValue);
+                ReduceMatrix(m);
+            }
+
+            return tour;
         }
 
         // --- Méthodes utilitaires réalisant des étapes de l'algorithme de Little
@@ -34,61 +88,45 @@
             float somme = 0;
             for(int i=0;i<m.NbRows; i++)
             {
-                if(i==0)
-                {
-                    MinLigne = m.GetValue(i, 1);
-                }
-                else
-                {
-                    MinLigne = m.GetValue(i, 0);
-                }
+                MinLigne = float.MaxValue;
                 for (int j=0;j<m.NbColumns;j++)
                 {
-                    if(j!=i)
+                    float val = m.GetValue(i, j);
+                    if (val < MinLigne)
                     {
-                        if (MinLigne > m.GetValue(i, j))
-                        {
-                            MinLigne = m.GetValue(i, j);
-                        }
+                        MinLigne = val;
                     }
-                    
                 }
+                if (MinLigne == float.MaxValue || MinLigne == 0)
+                {
+                    continue;
+                }              
                 somme += MinLigne;
                 for(int a=0;a<m.NbColumns;a++)
                 {
-                    if(a!=i)
-                    {
-                        m.SetValue(i, a, m.GetValue(i, a) - MinLigne);
-                    }
+                    m.SetValue(i, a, m.GetValue(i, a) - MinLigne);
+    
                 }
             }
             for (int k = 0; k < m.NbColumns; k++)
             {
-                if(k==0)
-                {
-                    MinColonne = m.GetValue(1, k);
-                }
-                else
-                {
-                    MinColonne = m.GetValue(0, k);
-                }
+                MinColonne = float.MaxValue;
                 for (int l = 0; l < m.NbRows; l++)
                 {
-                    if(l!=k)
+                    float val = m.GetValue(l, k);
+                    if (val < MinColonne)
                     {
-                        if (MinColonne > m.GetValue(l, k))
-                        {
-                            MinColonne = m.GetValue(l, k);
-                        }
+                        MinColonne = val;
                     }
+                }
+                if (MinColonne == float.MaxValue || MinColonne == 0)
+                {
+                    continue;
                 }
                 somme += MinColonne;
                 for(int b=0;b<m.NbRows;b++)
                 {
-                    if(k!=b)
-                    {
-                        m.SetValue(b, k, m.GetValue(b, k) - MinColonne);
-                    }
+                    m.SetValue(b, k, m.GetValue(b, k) - MinColonne);                    
                 }
             }
             return somme;
@@ -117,8 +155,6 @@
                                 minRow = m.GetValue(i,k);
                             }
                         }
-
-                        // Minimum de la colonne j (hors ligne i)
                         for (int k = 0; k < m.NbRows; k++)
                         {
                             if (k != i && m.GetValue(k,j)< minCol)

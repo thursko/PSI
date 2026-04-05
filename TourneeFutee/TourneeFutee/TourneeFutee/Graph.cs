@@ -247,6 +247,10 @@ namespace TourneeFutee
         }
 
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
+        public List<string> GetVertices()
+        {
+            return new List<string>(vertexNames);
+        }
 
     }
 
