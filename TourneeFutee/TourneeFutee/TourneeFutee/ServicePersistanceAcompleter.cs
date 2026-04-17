@@ -21,7 +21,6 @@ namespace TourneeFutee
         // ─────────────────────────────────────────────────────────────────────
         // Constructeur
         // ─────────────────────────────────────────────────────────────────────
-
         /// <summary>
         /// Instancie un service de persistance et se connecte automatiquement
         /// à la base de données <paramref name="dbname"/> sur le serveur
@@ -39,10 +38,24 @@ namespace TourneeFutee
           // TODO : initialiser et ouvrir la connexion à la base de données
         // Exemple :
             _connectionString = $"server={serverIp};database={dbname};uid={user};pwd={pwd};";
+            MySqlConnection conn = null;
+            try
+            {
+                conn = OpenConnection();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("ERREUR DE CONNECTION A LA BDD : "+ex.ToString());
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
 
-            // TODO : tester la connexion dès la construction
-            //        (ouvrir puis fermer une connexion pour valider les paramètres)
-            throw new NotImplementedException("Constructeur non implémenté.");
+            }
         }
 
         // ─────────────────────────────────────────────────────────────────────
