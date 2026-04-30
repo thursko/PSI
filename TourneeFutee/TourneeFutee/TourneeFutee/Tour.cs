@@ -17,13 +17,13 @@ namespace TourneeFutee
         }
         public Tour(List<string> l, float f)
         {
-            var result = new List<(string source, string destination)>();
+            segments = new List<(string source, string destination)>();
 
-            for (int i = 0; i < l.Count - 1; i += 2)
+            for (int i = 0; i < l.Count - 1; i++)
             {
-                result.Add((l[i], l[i + 1]));
+                segments.Add((l[i], l[i + 1]));
             }
-            segments = result;
+
             cost = f;
         }
         // Coût total de la tournée
@@ -66,7 +66,19 @@ namespace TourneeFutee
         {
             get
             {
-                return segments.SelectMany(s => new[] { s.source, s.destination }).ToList();
+                var result = new List<string>();
+
+                if (segments.Count == 0)
+                    return result;
+
+                result.Add(segments[0].source);
+
+                foreach (var s in segments)
+                {
+                    result.Add(s.destination);
+                }
+
+                return result;
             }
         }
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 

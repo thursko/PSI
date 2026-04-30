@@ -1,5 +1,6 @@
 using System;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 
 namespace TourneeFutee
 {
@@ -14,6 +15,7 @@ namespace TourneeFutee
         // ─────────────────────────────────────────────────────────────────────
 
         private readonly string _connectionString;
+        private readonly MySqlConnection _connection;
 
         // TODO : si vous avez besoin de maintenir une connexion ouverte,
         //        ajoutez un attribut MySqlConnection ici.
@@ -38,24 +40,18 @@ namespace TourneeFutee
           // TODO : initialiser et ouvrir la connexion à la base de données
         // Exemple :
             _connectionString = $"server={serverIp};database={dbname};uid={user};pwd={pwd};";
-            MySqlConnection conn = null;
+
             try
             {
-                conn = OpenConnection();
+                _connection = new MySqlConnection(_connectionString) ;
+                _connection.Open();
             }
-            catch(Exception ex)
+            catch(MySqlException ex)
             {
                 Console.WriteLine("ERREUR DE CONNECTION A LA BDD : "+ex.ToString());
                 throw;
             }
-            finally
-            {
-                if (conn != null)
-                {
-                    conn.Close();
-                }
 
-            }
         }
 
         // ─────────────────────────────────────────────────────────────────────
@@ -82,7 +78,66 @@ namespace TourneeFutee
             // Exemple pour récupérer l'id généré :
             //   uint id = Convert.ToUInt32(cmd.ExecuteScalar());
 
-            throw new NotImplementedException("SaveGraph non implémenté.");
+            using (var conn = OpenConnection())
+            {
+                // 1. Graphe
+                var cmd = new MySqlCommand(
+                    "INSERT INTO Graphe (est_oriente, nom, ordre) VALUES (@o, @n, @ord); SELECT LAST_INSERT_ID();",
+                    conn
+                );
+
+                cmd.Parameters.AddWithValue("@o", g.Directed ? 1 : 0);
+                cmd.Parameters.AddWithValue("@n", "Graph Metro");
+                cmd.Parameters.AddWithValue("@ord", g.Order);
+
+                uint graphId = Convert.ToUInt32(cmd.ExecuteScalar());
+
+                // 2. Sommets
+                var vertices = g.GetVertices();
+                var map = new Dictionary<string, uint>();
+
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    var cmdS = new MySqlCommand(
+                        "INSERT INTO Sommet (graphe_id, nom, indice, valeur) VALUES (@gid, @nom, @ind, @val); SELECT LAST_INSERT_ID();",
+                        conn
+                    );
+
+                    cmdS.Parameters.AddWithValue("@gid", graphId);
+                    cmdS.Parameters.AddWithValue("@nom", vertices[i]);
+                    cmdS.Parameters.AddWithValue("@ind", i);
+                    cmdS.Parameters.AddWithValue("@val", g.GetVertexValue(vertices[i]));
+
+                    uint id = Convert.ToUInt32(cmdS.ExecuteScalar());
+                    map[vertices[i]] = id;
+                }
+
+                // 3. Arcs
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    string source = vertices[i];
+                    var neighbors = g.GetNeighbors(source);
+
+                    foreach (var dest in neighbors)
+                    {
+                        float poids = g.GetEdgeWeight(source, dest);
+
+                        var cmdA = new MySqlCommand(
+                            "INSERT INTO Arc (graphe_id, sommet_source, sommet_dest, poids) VALUES (@gid, @s, @d, @p)",
+                            conn
+                        );
+
+                        cmdA.Parameters.AddWithValue("@gid", graphId);
+                        cmdA.Parameters.AddWithValue("@s", map[source]);
+                        cmdA.Parameters.AddWithValue("@d", map[dest]);
+                        cmdA.Parameters.AddWithValue("@p", poids);
+
+                        cmdA.ExecuteNonQuery();
+                    }
+                }
+
+                return graphId;
+            }
         }
 
         /// <summary>
@@ -103,7 +158,76 @@ namespace TourneeFutee
             //   3. SELECT dans Arc WHERE graphe_id = @id -> reconstruire la matrice
             //      d'adjacence en utilisant les correspondances sommet_id <-> indice
 
-            throw new NotImplementedException("LoadGraph non implémenté.");
+            using (var conn = OpenConnection())
+            {
+                bool directed = false;
+
+                // 1. Graphe
+                var cmd = new MySqlCommand(
+                    "SELECT est_oriente FROM Graphe WHERE id = @id",
+                    conn
+                );
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                        directed = reader.GetBoolean(0);
+                }
+
+                var graph = new Graph(directed);
+
+                // 2. Sommets
+                var idToName = new Dictionary<uint, string>();
+
+                var cmdS = new MySqlCommand(
+                    "SELECT id, nom, valeur FROM Sommet WHERE graphe_id = @id ORDER BY indice",
+                    conn
+                );
+
+                cmdS.Parameters.AddWithValue("@id", id);
+
+                using (var reader = cmdS.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        uint sid = reader.GetUInt32(0);
+                        string nom = reader.GetString(1);
+
+                        graph.AddVertex(nom);
+                        idToName[sid] = nom;
+                    }
+                }
+
+                // 3. Arcs
+                var cmdA = new MySqlCommand(
+                    "SELECT sommet_source, sommet_dest, poids FROM Arc WHERE graphe_id = @id",
+                    conn
+                );
+                cmdA.Parameters.AddWithValue("@id", id);
+
+                using (var reader = cmdA.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string s = idToName[reader.GetUInt32(0)];
+                        string d = idToName[reader.GetUInt32(1)];
+                        float p = reader.GetFloat(2);
+
+
+                        try
+                        {
+                            graph.AddEdge(s, d, p);
+                        }
+                        catch
+                        {
+                            // évite doublons (important si graphe non orienté)
+                        }
+                    }
+                }
+
+                return graph;
+            }
         }
 
         /// <summary>
@@ -126,7 +250,53 @@ namespace TourneeFutee
             // Attention : conserver l'ordre des étapes est essentiel pour
             //             pouvoir reconstruire la tournée fidèlement au chargement.
 
-            throw new NotImplementedException("SaveTour non implémenté.");
+            using (var conn = OpenConnection())
+            {
+                // 1. Insert Tournee
+                var cmd = new MySqlCommand(
+                    "INSERT INTO Tournee (graphe_id, cout_total) VALUES (@gid, @c); SELECT LAST_INSERT_ID();",
+                    conn
+                );
+
+                cmd.Parameters.AddWithValue("@gid", graphId);
+                cmd.Parameters.AddWithValue("@c", t.Cost);
+
+                uint tourId = Convert.ToUInt32(cmd.ExecuteScalar());
+
+                // 2. Map sommet nom -> id
+                var map = new Dictionary<string, uint>();
+
+                var cmdMap = new MySqlCommand(
+                    "SELECT id, nom FROM Sommet WHERE graphe_id = @gid",
+                    conn
+                );
+                cmdMap.Parameters.AddWithValue("@gid", graphId);
+
+                using (var reader = cmdMap.ExecuteReader())
+                {
+                    while (reader.Read())
+                        map[reader.GetString(1)] = reader.GetUInt32(0);
+                }
+
+                // 3. Insérer les étapes (séquence de sommets)
+                var vertices = t.Vertices;
+
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    var cmdStep = new MySqlCommand(
+                        "INSERT INTO EtapeTournee (tournee_id, numero_ordre, sommet_id) VALUES (@tid, @ord, @sid)",
+                        conn
+                    );
+
+                    cmdStep.Parameters.AddWithValue("@tid", tourId);
+                    cmdStep.Parameters.AddWithValue("@ord", i);
+                    cmdStep.Parameters.AddWithValue("@sid", map[vertices[i]]);
+
+                    cmdStep.ExecuteNonQuery();
+                }
+
+                return tourId;
+            }
         }
 
         /// <summary>
@@ -145,7 +315,45 @@ namespace TourneeFutee
             //      ORDER BY numero_ordre -> reconstruire la séquence ordonnée de sommets
             //   3. Construire et retourner l'instance Tour
 
-            throw new NotImplementedException("LoadTour non implémenté.");
+            using (var conn = OpenConnection())
+            {
+                float cost = 0;
+
+                // 1. Charger coût
+                var cmd = new MySqlCommand(
+                    "SELECT cout_total FROM Tournee WHERE id = @id",
+                    conn
+                );
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                        cost = reader.GetFloat(0);
+                }
+
+                // 2. Charger séquence ORDONNÉE
+                var sequence = new List<string>();
+
+                var cmdStep = new MySqlCommand(
+                    @"SELECT S.nom 
+              FROM EtapeTournee E
+              JOIN Sommet S ON E.sommet_id = S.id
+              WHERE E.tournee_id = @id
+              ORDER BY E.numero_ordre",
+                    conn
+                );
+                cmdStep.Parameters.AddWithValue("@id", id);
+
+                using (var reader = cmdStep.ExecuteReader())
+                {
+                    while (reader.Read())
+                        sequence.Add(reader.GetString(0));
+                }
+
+                // 3. Construire Tour correctement
+                return new Tour(sequence, cost);
+            }
         }
 
         // ─────────────────────────────────────────────────────────────────────
