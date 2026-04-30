@@ -13,6 +13,18 @@
             segments = new List<(string, string)>();
             cost = 0;
         }
+        public Tour(List<string> l, float f)
+        {
+            if(l!=null)
+            {
+                segments = l;
+            }
+            else
+            {
+                segments = new List<(string, string)>();
+            }
+            cost = f;
+        }
         // Coût total de la tournée
         public float Cost
         {
