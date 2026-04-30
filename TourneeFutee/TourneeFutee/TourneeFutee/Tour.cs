@@ -1,4 +1,6 @@
-﻿namespace TourneeFutee
+﻿using System.Reflection.Metadata.Ecma335;
+using System.Linq;
+namespace TourneeFutee
 {
     // Modélise une tournée dans le cadre du problème du voyageur de commerce
     public class Tour
@@ -60,7 +62,13 @@
                 Console.WriteLine(source + " -> " + destination);
             }
         }
-
+        public IList<string> Vertices
+        {
+            get
+            {
+                return segments.SelectMany(s => new[] { s.source, s.destination }).ToList();
+            }
+        }
         // TODO : ajouter toutes les méthodes que vous jugerez pertinentes 
 
     }
