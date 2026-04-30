@@ -15,14 +15,13 @@
         }
         public Tour(List<string> l, float f)
         {
-            if(l!=null)
+            var result = new List<(string source, string destination)>();
+
+            for (int i = 0; i < l.Count - 1; i += 2)
             {
-                segments = l;
+                result.Add((l[i], l[i + 1]));
             }
-            else
-            {
-                segments = new List<(string, string)>();
-            }
+            segments = result;
             cost = f;
         }
         // Coût total de la tournée
