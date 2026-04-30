@@ -35,6 +35,10 @@ namespace TourneeFutee
 
         // Propriété : ordre du graphe
         // Lecture seule
+        public bool ContainsVertex(string name)
+        {
+            return vertexNames.Contains(name);
+        }
         public int Order
         {
             get { return this.matAdj.NbRows; } // TODO : implémenter
