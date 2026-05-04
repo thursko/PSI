@@ -38,7 +38,6 @@ namespace TourneeFutee
         public ServicePersistance(string serverIp, string dbname, string user, string pwd)
         {
           // TODO : initialiser et ouvrir la connexion à la base de données
-        // Exemple :
             _connectionString = $"server={serverIp};database={dbname};uid={user};pwd={pwd};";
 
             try
@@ -80,7 +79,6 @@ namespace TourneeFutee
 
             using (var conn = OpenConnection())
             {
-                // 1. Graphe
                 var cmd = new MySqlCommand(
                     "INSERT INTO Graphe (est_oriente, nom, ordre) VALUES (@o, @n, @ord); SELECT LAST_INSERT_ID();",
                     conn
@@ -92,7 +90,6 @@ namespace TourneeFutee
 
                 uint graphId = Convert.ToUInt32(cmd.ExecuteScalar());
 
-                // 2. Sommets
                 var vertices = g.GetVertices();
                 var map = new Dictionary<string, uint>();
 
@@ -112,7 +109,6 @@ namespace TourneeFutee
                     map[vertices[i]] = id;
                 }
 
-                // 3. Arcs
                 for (int i = 0; i < vertices.Count; i++)
                 {
                     string source = vertices[i];
@@ -162,7 +158,6 @@ namespace TourneeFutee
             {
                 bool directed = false;
 
-                // 1. Graphe
                 var cmd = new MySqlCommand(
                     "SELECT est_oriente FROM Graphe WHERE id = @id",
                     conn
@@ -177,7 +172,6 @@ namespace TourneeFutee
 
                 var graph = new Graph(directed);
 
-                // 2. Sommets
                 var idToName = new Dictionary<uint, string>();
 
                 var cmdS = new MySqlCommand(
@@ -199,7 +193,6 @@ namespace TourneeFutee
                     }
                 }
 
-                // 3. Arcs
                 var cmdA = new MySqlCommand(
                     "SELECT sommet_source, sommet_dest, poids FROM Arc WHERE graphe_id = @id",
                     conn
@@ -221,7 +214,6 @@ namespace TourneeFutee
                         }
                         catch
                         {
-                            // évite doublons (important si graphe non orienté)
                         }
                     }
                 }
@@ -252,7 +244,6 @@ namespace TourneeFutee
 
             using (var conn = OpenConnection())
             {
-                // 1. Insert Tournee
                 var cmd = new MySqlCommand(
                     "INSERT INTO Tournee (graphe_id, cout_total) VALUES (@gid, @c); SELECT LAST_INSERT_ID();",
                     conn
@@ -263,7 +254,6 @@ namespace TourneeFutee
 
                 uint tourId = Convert.ToUInt32(cmd.ExecuteScalar());
 
-                // 2. Map sommet nom -> id
                 var map = new Dictionary<string, uint>();
 
                 var cmdMap = new MySqlCommand(
@@ -278,7 +268,6 @@ namespace TourneeFutee
                         map[reader.GetString(1)] = reader.GetUInt32(0);
                 }
 
-                // 3. Insérer les étapes (séquence de sommets)
                 var vertices = t.Vertices;
 
                 for (int i = 0; i < vertices.Count; i++)
@@ -319,7 +308,6 @@ namespace TourneeFutee
             {
                 float cost = 0;
 
-                // 1. Charger coût
                 var cmd = new MySqlCommand(
                     "SELECT cout_total FROM Tournee WHERE id = @id",
                     conn
@@ -332,7 +320,6 @@ namespace TourneeFutee
                         cost = reader.GetFloat(0);
                 }
 
-                // 2. Charger séquence ORDONNÉE
                 var sequence = new List<string>();
 
                 var cmdStep = new MySqlCommand(
@@ -351,7 +338,6 @@ namespace TourneeFutee
                         sequence.Add(reader.GetString(0));
                 }
 
-                // 3. Construire Tour correctement
                 return new Tour(sequence, cost);
             }
         }
