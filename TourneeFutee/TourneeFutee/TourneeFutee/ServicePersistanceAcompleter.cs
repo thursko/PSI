@@ -187,8 +187,9 @@ namespace TourneeFutee
                     {
                         uint sid = reader.GetUInt32(0);
                         string nom = reader.GetString(1);
+                        float valeur = reader.GetFloat(2); 
 
-                        graph.AddVertex(nom);
+                        graph.AddVertex(nom, valeur);
                         idToName[sid] = nom;
                     }
                 }
