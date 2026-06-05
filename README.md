@@ -4,4 +4,5 @@ Projet Scientifique informatique
 # Membres du projet
 
 Arthur MARION
-Aurélien LESTAEVEL
+AurÃ©lien LESTAEVEL
+Gabriel MALINVAUD
