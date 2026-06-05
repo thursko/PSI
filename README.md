@@ -1,5 +1,5 @@
-# PSI
-Projet Scientifique informatique
+# Problème Scientifique et Informatique
+Problème du voyageur de commerce - logiciel d’optimisation de tournées
 
 # Membres du projet
 
