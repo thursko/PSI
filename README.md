@@ -11,7 +11,7 @@ Fonctionnalités du projet:
 
   • Type graphe basé sur une matrice d’adjacence
 
-  • Calcul de tournées optimales
+  • Calcul de tournées optimales (algorithme de Little)
 
   • Persistance en base de données
 
